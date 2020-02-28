@@ -1,14 +1,26 @@
 // You do not need to do anything in this file
-import React from 'react';
+import React, { usestate } from "react";
 
 const CommentInput = props => {
+  const [newComment, setNewComment] = useState("");
+  const onEnterKeyDown = e => {
+    e.preventDefault();
+    const comment = {
+      username: "th0mmy_g",
+      text: newComment
+    };
+    props.addComment(props.id, comment);
+    props.setComments([...props.comments, comment]);
+  };
   return (
-    <form className="comment-form" onSubmit={props.submitComment}>
+    <form className="comment-form">
       <input
         type="text"
-        value={props.comment}
         placeholder="Add comment... "
-        onChange={props.changeComment}
+        onChange={e => setNewComment(e.target.value)}
+        onKeyDown={e => {
+          e.key === "Enter" && onEnterKeyDown(e);
+        }}
       />
     </form>
   );
